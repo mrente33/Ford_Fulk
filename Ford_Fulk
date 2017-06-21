@@ -1,0 +1,15 @@
+#Flow = zeros(6,6)
+Flow = [0 16 13  0  0  0 ;
+        0  0 10  0 12  0 ;
+        0  4  0 14  0  0 ;
+        0  0  0  0  7  4 ;
+        0  0  9  0  0 20 ;
+        0  0  0  0  0  0.0 ]
+
+function Ford_Fulk(m::Matrix)
+k = size(m,2)
+return k
+end
+
+reg = Ford_Fulk(Flow)
+print(reg)
