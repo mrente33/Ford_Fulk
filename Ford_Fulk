@@ -1,15 +1,76 @@
 #Flow = zeros(6,6)
-Flow = [0 16 13  0  0  0 ;
+Kapazität = [0 16 13  0  0  0 ;
         0  0 10  0 12  0 ;
         0  4  0 14  0  0 ;
         0  0  0  0  7  4 ;
         0  0  9  0  0 20 ;
         0  0  0  0  0  0.0 ]
 
-function Ford_Fulk(m::Matrix)
-k = size(m,2)
-return k
+Fluss = zeros(6,6);
+
+function Ford_Fulk(flow::Matrix,capa::Matrix)
+#Bestimmung der Anzahl der Knoten n
+n = size(capa,2)
+
+#Vektor markiert, dessen i-ter Eintrag 0 ist, wenn Knoten i noch nicht markiert
+#ist und ansonsten 1.
+markiert = zeros(n);
+
+#Vektor markiert_durch, dessen i-ter Eintrag angibt, durch welche Knoten der
+#Knoten i markiert wurde.
+markiert_durch = zeros(n);
+
+#Vektor markierungsfolge,in dem die Reihenfolge der Markierung hinterlegt
+#ist
+markierungsfolge = zeros(n);
+
+#Start des Markierungsverfahrens
+markiert[1] = 1;
+markiert_durch[1] = n;
+markierungsfolge[1] = 1;
+markierungsindex = 1;
+
+for i= 1:n
+    #Abbruch wenn alle markierten Knoten abgearbeitet sind
+    if markierungsfolge[i] == 0
+      break
+    end
+    #Abbruch wenn Endknoten markiert wurde
+    if markierungsfolge[i] == n
+      break
+    end
+
+    for j = 1:n
+      if markiert[j]== 0
+        #diff = capa[j,i] - flow[j,i]
+        if capa[i,j] - flow[i,j] > 0
+          markiert[i] = 1
+          markiert_durch[i] = j
+          #print(markiert_durch)
+          markierungsfolge[markierungsindex] = i
+          markierungsindex = markierungsindex +1
+          print(i)
+          print(j)
+        end
+      end
+    end
+
+    if markiert[n] == 1
+      pfad = ones(Int64,n)
+      k = n
+      b = 1
+      pfad[1] = n
+
+      while(markiert_durch[k] !=n)
+        b +=1
+        pfad[b] = markiert_durch[k]
+        k = markiert_durch[k]
+      end
+    end
+
+  end
+
 end
 
-reg = Ford_Fulk(Flow)
+reg = Ford_Fulk(Fluss,Kapazität)
 print(reg)
